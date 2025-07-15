@@ -5,22 +5,9 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 
-type Tournament = {
-  name: string;
-  date: string;
-  status: string;
-};
-
-type Team = {
-  name: string;
-  rank: number;
-};
-
-type Player = {
-  name: string;
-  team: string;
-  titles: number;
-};
+type Tournament = { name: string; date: string; status: string; };
+type Team = { name: string; rank: number; };
+type Player = { name: string; team: string; titles: number; };
 
 const games = ["CS2", "LoL", "RL", "Valorant"];
 const lolLeagues = ["LEC", "LCK", "LPL", "LCS"];
@@ -28,29 +15,33 @@ const lolLeagues = ["LEC", "LCK", "LPL", "LCS"];
 export default function BrokenMeta() {
   const [selectedGame, setSelectedGame] = useState("CS2");
   const [selectedLeague, setSelectedLeague] = useState("LEC");
-  const [tournaments, setTournaments] = useState<Array<Tournament>>([]);
-  const [teams, setTeams] = useState<Array<Team>>([]);
-  const [players, setPlayers] = useState<Array<Player>>([]);
+  const [tournaments, setTournaments] = useState<Tournament[]>([]);
+  const [teams, setTeams] = useState<Team[]>([]);
+  const [players, setPlayers] = useState<Player[]>([]);
 
   useEffect(() => {
-    if (selectedGame === "LoL") {
-      setTeams([
-        { name: `${selectedLeague} Kings`, rank: 1 },
-        { name: `${selectedLeague} Stars`, rank: 2 },
-        { name: `${selectedLeague} Giants`, rank: 3 },
-      ]);
-    } else {
+    if (selectedGame !== "LoL") {
       setTournaments([
         { name: `${selectedGame} Masters`, date: "2025-08-10", status: "En cours" },
         { name: `${selectedGame} Championship`, date: "2025-09-15", status: "À venir" },
       ]);
-
-      setTeams([
-        { name: `${selectedGame} Titans`, rank: 1 },
-        { name: `${selectedGame} Warriors`, rank: 2 },
-        { name: `${selectedGame} Legends`, rank: 3 },
-      ]);
+    } else {
+      setTournaments([]);
     }
+
+    setTeams(
+      selectedGame === "LoL"
+        ? [
+            { name: `${selectedLeague} Kings`, rank: 1 },
+            { name: `${selectedLeague} Stars`, rank: 2 },
+            { name: `${selectedLeague} Giants`, rank: 3 },
+          ]
+        : [
+            { name: `${selectedGame} Titans`, rank: 1 },
+            { name: `${selectedGame} Warriors`, rank: 2 },
+            { name: `${selectedGame} Legends`, rank: 3 },
+          ]
+    );
 
     setPlayers([
       { name: "PlayerOne", team: `${selectedGame} Titans`, titles: 12 },
@@ -61,6 +52,7 @@ export default function BrokenMeta() {
   return (
     <div className="min-h-screen bg-zinc-900 text-white p-6 max-w-7xl mx-auto">
       <h1 className="text-5xl font-bold mb-6">Broken Meta</h1>
+
       <Tabs value={selectedGame} onValueChange={setSelectedGame} className="mb-6">
         <TabsList className="flex space-x-4">
           {games.map((game) => (
@@ -94,11 +86,13 @@ export default function BrokenMeta() {
               <Card>
                 <CardContent className="p-4">
                   <h2 className="text-xl font-semibold mb-2">🏆 Tournois</h2>
-                  {tournaments.map((t, i) => (
-                    <div key={i} className="mb-1">
-                      <strong>{t.name}</strong> – {t.date} ({t.status})
-                    </div>
-                  ))}
+                  {tournaments.length
+                    ? tournaments.map((t, i) => (
+                        <div key={i} className="mb-1">
+                          <strong>{t.name}</strong> – {t.date} ({t.status})
+                        </div>
+                      ))
+                    : "Aucun tournoi pour ce jeu."}
                 </CardContent>
               </Card>
 
