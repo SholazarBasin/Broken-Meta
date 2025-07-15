@@ -3,16 +3,22 @@
 import { useState, useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
-type Tournament = { name: string; date: string; status: string; };
-type Team = { name: string; rank: number; };
-type Player = { name: string; team: string; titles: number; };
+type Tournament = { name: string; date: string; status: string };
+type Team = { name: string; rank: number };
+type Player = { name: string; team: string; titles: number };
 
 const games = ["CS2", "LoL", "RL", "Valorant"];
 const lolLeagues = ["LEC", "LCK", "LPL", "LCS"];
 
-export default function BrokenMeta() {
+export default function HomePage() {
   const [selectedGame, setSelectedGame] = useState("CS2");
   const [selectedLeague, setSelectedLeague] = useState("LEC");
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
@@ -20,32 +26,44 @@ export default function BrokenMeta() {
   const [players, setPlayers] = useState<Player[]>([]);
 
   useEffect(() => {
-    if (selectedGame !== "LoL") {
-      setTournaments([
-        { name: `${selectedGame} Masters`, date: "2025-08-10", status: "En cours" },
-        { name: `${selectedGame} Championship`, date: "2025-09-15", status: "À venir" },
+    if (selectedGame === "LoL") {
+      setTournaments([]);
+      setTeams([
+        { name: `${selectedLeague} Kings`, rank: 1 },
+        { name: `${selectedLeague} Stars`, rank: 2 },
+        { name: `${selectedLeague} Giants`, rank: 3 },
       ]);
     } else {
-      setTournaments([]);
+      setTournaments([
+        {
+          name: `${selectedGame} Masters`,
+          date: "2025-08-10",
+          status: "En cours",
+        },
+        {
+          name: `${selectedGame} Championship`,
+          date: "2025-09-15",
+          status: "À venir",
+        },
+      ]);
+      setTeams([
+        { name: `${selectedGame} Titans`, rank: 1 },
+        { name: `${selectedGame} Warriors`, rank: 2 },
+        { name: `${selectedGame} Legends`, rank: 3 },
+      ]);
     }
 
-    setTeams(
-      selectedGame === "LoL"
-        ? [
-            { name: `${selectedLeague} Kings`, rank: 1 },
-            { name: `${selectedLeague} Stars`, rank: 2 },
-            { name: `${selectedLeague} Giants`, rank: 3 },
-          ]
-        : [
-            { name: `${selectedGame} Titans`, rank: 1 },
-            { name: `${selectedGame} Warriors`, rank: 2 },
-            { name: `${selectedGame} Legends`, rank: 3 },
-          ]
-    );
-
     setPlayers([
-      { name: "PlayerOne", team: `${selectedGame} Titans`, titles: 12 },
-      { name: "PlayerTwo", team: `${selectedGame} Warriors`, titles: 9 },
+      {
+        name: "PlayerOne",
+        team: `${selectedGame} Titans`,
+        titles: 12,
+      },
+      {
+        name: "PlayerTwo",
+        team: `${selectedGame} Warriors`,
+        titles: 9,
+      },
     ]);
   }, [selectedGame, selectedLeague]);
 
@@ -86,25 +104,25 @@ export default function BrokenMeta() {
               <Card>
                 <CardContent className="p-4">
                   <h2 className="text-xl font-semibold mb-2">🏆 Tournois</h2>
-                  {tournaments.length
-                    ? tournaments.map((t, i) => (
-                        <div key={i} className="mb-1">
-                          <strong>{t.name}</strong> – {t.date} ({t.status})
-                        </div>
-                      ))
-                    : "Aucun tournoi pour ce jeu."}
+                  {tournaments.length ? (
+                    tournaments.map((t, i) => (
+                      <div key={i} className="mb-1">
+                        <strong>{t.name}</strong> – {t.date} ({t.status})
+                      </div>
+                    ))
+                  ) : (
+                    <p>Aucun tournoi disponible.</p>
+                  )}
                 </CardContent>
               </Card>
 
               <Card>
                 <CardContent className="p-4">
                   <h2 className="text-xl font-semibold mb-2">
-                    {game === "CS2" ? "🔫 Classement HLTV / VRS" : "👥 Top 10 Équipes"}
+                    {game === "CS2" ? "🔫 Classement HLTV / VRS" : "👥 Top Équipes"}
                   </h2>
                   {teams.map((team, i) => (
-                    <div key={i}>
-                      #{team.rank} – {team.name}
-                    </div>
+                    <div key={i}>#{team.rank} – {team.name}</div>
                   ))}
                 </CardContent>
               </Card>
