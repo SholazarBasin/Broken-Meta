@@ -11,9 +11,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 
-const games = ["CS2", "LoL", "RL", "Valorant"];
-const lolLeagues = ["LEC", "LCK", "LPL", "LCS"];
-
+// 👇 Type definitions
 type Tournament = {
   name: string;
   date: string;
@@ -31,6 +29,9 @@ type Player = {
   titles: number;
 };
 
+const games = ["CS2", "LoL", "RL", "Valorant"];
+const lolLeagues = ["LEC", "LCK", "LPL", "LCS"];
+
 export default function BrokenMeta() {
   const [selectedGame, setSelectedGame] = useState("CS2");
   const [selectedLeague, setSelectedLeague] = useState("LEC");
@@ -46,12 +47,12 @@ export default function BrokenMeta() {
         { name: `${selectedLeague} Stars`, rank: 2 },
         { name: `${selectedLeague} Giants`, rank: 3 },
       ]);
+      setTournaments([]);
     } else {
       setTournaments([
         { name: `${selectedGame} Masters`, date: "2025-08-10", status: "En cours" },
         { name: `${selectedGame} Championship`, date: "2025-09-15", status: "À venir" },
       ]);
-
       setTeams([
         { name: `${selectedGame} Titans`, rank: 1 },
         { name: `${selectedGame} Warriors`, rank: 2 },
@@ -68,6 +69,7 @@ export default function BrokenMeta() {
   return (
     <div className="min-h-screen bg-black text-white p-6 max-w-7xl mx-auto">
       <h1 className="text-5xl font-bold mb-6">Broken Meta</h1>
+
       <Tabs value={selectedGame} onValueChange={setSelectedGame} className="mb-6">
         <TabsList className="flex space-x-4">
           {games.map((game) => (
@@ -105,11 +107,15 @@ export default function BrokenMeta() {
               <Card>
                 <CardContent className="p-4">
                   <h2 className="text-xl font-semibold mb-2">Tournois</h2>
-                  {tournaments.map((t, i) => (
-                    <div key={i} className="mb-1">
-                      <strong>{t.name}</strong> – {t.date} ({t.status})
-                    </div>
-                  ))}
+                  {tournaments.length > 0 ? (
+                    tournaments.map((t, i) => (
+                      <div key={i} className="mb-1">
+                        <strong>{t.name}</strong> – {t.date} ({t.status})
+                      </div>
+                    ))
+                  ) : (
+                    <div>Aucun tournoi pour ce jeu.</div>
+                  )}
                 </CardContent>
               </Card>
 

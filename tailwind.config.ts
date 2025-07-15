@@ -7,9 +7,16 @@ const config: Config = {
     "./components/**/*.{ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        neutral: {
+          900: "#171717", // Ajouté pour éviter l'erreur
+        },
+      },
+    },
   },
   plugins: [],
 };
 
 export default config;
+
