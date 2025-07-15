@@ -6,13 +6,32 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const games = ["CS2", "LoL", "RL", "Valorant"];
 
+// 🔧 Types ajoutés
+type Tournament = {
+  name: string;
+  date: string;
+  status: string;
+};
+
+type Team = {
+  name: string;
+  rank: number;
+};
+
+type Player = {
+  name: string;
+  team: string;
+  titles: number;
+};
+
 export default function BrokenMeta() {
   const [selectedGame, setSelectedGame] = useState("CS2");
-  const [tournaments, setTournaments] = useState([]);
-  const [teams, setTeams] = useState([]);
-  const [players, setPlayers] = useState([]);
+  const [tournaments, setTournaments] = useState<Tournament[]>([]);
+  const [teams, setTeams] = useState<Team[]>([]);
+  const [players, setPlayers] = useState<Player[]>([]);
 
   useEffect(() => {
+    // Simulation de données (à remplacer par API plus tard)
     setTournaments([
       { name: `${selectedGame} Masters`, date: "2025-08-10", status: "En cours" },
       { name: `${selectedGame} Championship`, date: "2025-09-15", status: "À venir" },
