@@ -1,24 +1,42 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent
+} from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
-  SelectItem,
+  SelectItem
 } from "@/components/ui/select";
 
-type Tournament = { name: string; date: string; status: string };
-type Team = { name: string; rank: number };
-type Player = { name: string; team: string; titles: number };
+type Tournament = {
+  name: string;
+  date: string;
+  status: string;
+};
+
+type Team = {
+  name: string;
+  rank: number;
+};
+
+type Player = {
+  name: string;
+  team: string;
+  titles: number;
+};
 
 const games = ["CS2", "LoL", "RL", "Valorant"];
 const lolLeagues = ["LEC", "LCK", "LPL", "LCS"];
 
-export default function HomePage() {
+export default function BrokenMeta() {
   const [selectedGame, setSelectedGame] = useState("CS2");
   const [selectedLeague, setSelectedLeague] = useState("LEC");
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
@@ -27,29 +45,30 @@ export default function HomePage() {
 
   useEffect(() => {
     if (selectedGame === "LoL") {
-      setTournaments([]);
       setTeams([
         { name: `${selectedLeague} Kings`, rank: 1 },
         { name: `${selectedLeague} Stars`, rank: 2 },
-        { name: `${selectedLeague} Giants`, rank: 3 },
+        { name: `${selectedLeague} Giants`, rank: 3 }
       ]);
+      setTournaments([]);
     } else {
       setTournaments([
         {
           name: `${selectedGame} Masters`,
           date: "2025-08-10",
-          status: "En cours",
+          status: "En cours"
         },
         {
           name: `${selectedGame} Championship`,
           date: "2025-09-15",
-          status: "À venir",
-        },
+          status: "À venir"
+        }
       ]);
+
       setTeams([
         { name: `${selectedGame} Titans`, rank: 1 },
         { name: `${selectedGame} Warriors`, rank: 2 },
-        { name: `${selectedGame} Legends`, rank: 3 },
+        { name: `${selectedGame} Legends`, rank: 3 }
       ]);
     }
 
@@ -57,13 +76,13 @@ export default function HomePage() {
       {
         name: "PlayerOne",
         team: `${selectedGame} Titans`,
-        titles: 12,
+        titles: 12
       },
       {
         name: "PlayerTwo",
         team: `${selectedGame} Warriors`,
-        titles: 9,
-      },
+        titles: 9
+      }
     ]);
   }, [selectedGame, selectedLeague]);
 
@@ -74,7 +93,11 @@ export default function HomePage() {
       <Tabs value={selectedGame} onValueChange={setSelectedGame} className="mb-6">
         <TabsList className="flex space-x-4">
           {games.map((game) => (
-            <TabsTrigger key={game} value={game} className="text-lg px-4 py-2 rounded-md border">
+            <TabsTrigger
+              key={game}
+              value={game}
+              className="text-lg px-4 py-2 rounded-md border"
+            >
               {game}
             </TabsTrigger>
           ))}
@@ -103,15 +126,15 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card>
                 <CardContent className="p-4">
-                  <h2 className="text-xl font-semibold mb-2">🏆 Tournois</h2>
-                  {tournaments.length ? (
+                  <h2 className="text-xl font-semibold mb-2">📅 Tournois</h2>
+                  {tournaments.length > 0 ? (
                     tournaments.map((t, i) => (
                       <div key={i} className="mb-1">
                         <strong>{t.name}</strong> – {t.date} ({t.status})
                       </div>
                     ))
                   ) : (
-                    <p>Aucun tournoi disponible.</p>
+                    <p>Aucun tournoi disponible</p>
                   )}
                 </CardContent>
               </Card>
@@ -119,17 +142,21 @@ export default function HomePage() {
               <Card>
                 <CardContent className="p-4">
                   <h2 className="text-xl font-semibold mb-2">
-                    {game === "CS2" ? "🔫 Classement HLTV / VRS" : "👥 Top Équipes"}
+                    {game === "CS2"
+                      ? "📊 Classement HLTV / VRS"
+                      : "🏆 Top Équipes"}
                   </h2>
                   {teams.map((team, i) => (
-                    <div key={i}>#{team.rank} – {team.name}</div>
+                    <div key={i}>
+                      #{team.rank} – {team.name}
+                    </div>
                   ))}
                 </CardContent>
               </Card>
 
               <Card>
                 <CardContent className="p-4">
-                  <h2 className="text-xl font-semibold mb-2">🎮 Joueurs</h2>
+                  <h2 className="text-xl font-semibold mb-2">🧑 Joueurs</h2>
                   {players.map((player, i) => (
                     <div key={i}>
                       <strong>{player.name}</strong> – {player.team} ({player.titles} titres)
