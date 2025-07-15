@@ -5,7 +5,6 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 
-// TypeScript types
 type Tournament = {
   name: string;
   date: string;
@@ -29,9 +28,9 @@ const lolLeagues = ["LEC", "LCK", "LPL", "LCS"];
 export default function BrokenMeta() {
   const [selectedGame, setSelectedGame] = useState("CS2");
   const [selectedLeague, setSelectedLeague] = useState("LEC");
-  const [tournaments, setTournaments] = useState<Tournament[]>([]);
-  const [teams, setTeams] = useState<Team[]>([]);
-  const [players, setPlayers] = useState<Player[]>([]);
+  const [tournaments, setTournaments] = useState<Array<Tournament>>([]);
+  const [teams, setTeams] = useState<Array<Team>>([]);
+  const [players, setPlayers] = useState<Array<Player>>([]);
 
   useEffect(() => {
     if (selectedGame === "LoL") {
@@ -62,7 +61,6 @@ export default function BrokenMeta() {
   return (
     <div className="min-h-screen bg-zinc-900 text-white p-6 max-w-7xl mx-auto">
       <h1 className="text-5xl font-bold mb-6">Broken Meta</h1>
-
       <Tabs value={selectedGame} onValueChange={setSelectedGame} className="mb-6">
         <TabsList className="flex space-x-4">
           {games.map((game) => (
